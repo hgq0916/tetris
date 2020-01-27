@@ -12,6 +12,8 @@ public class MainPanel extends JPanel {
   public MainPanel(MainWindow mainWindow){
 
     this.mainWindow = mainWindow;
+    //this.setBackground(new Color(0,0,0));
+    this.setBackground(new Color(255,255,255));
 
   }
 
@@ -32,7 +34,7 @@ public class MainPanel extends JPanel {
     int x = 0;
     int y = 0;
 
-    g.setColor(Color.BLUE);
+    g.setColor(Color.LIGHT_GRAY);
     int x11  = 0;
     int y11 = 0;
     int x12 = 0;

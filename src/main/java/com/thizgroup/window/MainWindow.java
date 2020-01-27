@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -29,7 +30,8 @@ public class MainWindow extends JFrame {
   public static final int BGC_BLOCK_HEIGHT = 10;
 
 
-
+  private Image iBuffer;
+  private Graphics gBuffer;
 
   //窗口组件
   private JPanel mainPanel = null;
@@ -43,6 +45,7 @@ public class MainWindow extends JFrame {
     this.setSize(new Dimension(WIN_WIDTH,WIN_HEIGHT+TITLE_BAR_HEIGHT));
     //设置窗口布局
     this.setLayout(null);
+    this.setBackground(WIN_BGC);
     //设置窗口标题
     this.setTitle(WIN_TITLE);
     //设置是否可以调整窗口大小
@@ -76,14 +79,27 @@ public class MainWindow extends JFrame {
     this.setVisible(true);
   }
 
+  @Override
+  public void update(Graphics g) {
+    if(iBuffer==null)
+    {
+      iBuffer=createImage(this.getSize().width,this.getSize().height);
+      gBuffer=iBuffer.getGraphics();
+    }
+    gBuffer.setColor(getBackground());
+    gBuffer.fillRect(0,0,this.getSize().width,this.getSize().height);
+    paint(g);
+    g.drawImage(iBuffer,0,0,this);
+  }
+
   /**
    * 重写paint方法
    */
   @Override
-  public void paint(Graphics g) {
-    super.paint(g);
+  public void paint(Graphics src) {
+    super.paint(src);
 
-    Graphics2D graphics2D = (Graphics2D) g;
+    Graphics2D graphics2D = (Graphics2D) src;
     Color oldColor = graphics2D.getColor();
     //画背景方块
     drawBackgroundBlock(graphics2D);

@@ -4,6 +4,7 @@ import com.thizgroup.window.MainPanel;
 import com.thizgroup.window.MainWindow;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 /***
  * 方块
@@ -125,4 +126,15 @@ public class Block {
   public void setColor(Color color) {
     this.color = color;
   }
+
+  public Rectangle getRect(){
+    return new Rectangle((int)x,(int) y, BLOCK_WIDTH, BLOCK_HEIGHT);
+  }
+
+  public boolean isCollision(Block block) {
+    if(this.getRect().intersects(block.getRect())) return true;
+
+    return false;
+  }
+
 }

@@ -22,7 +22,6 @@ public class MainPanel extends JPanel {
     this.setBackground(new Color(255,255,255));
     this.setBounds(25,44,PANEL_WIDTH,PANEL_HEIGHT);
 
-    blocks[0][0] = new Block(this.mainWindow,20,20,Color.BLUE);
   }
 
   public boolean isOverPanel(int x,int y){
@@ -90,27 +89,48 @@ public class MainPanel extends JPanel {
     //越界检测
     if(this.isOverPanel(block.getX()-distance,block.getY())) return false;
 
-    //todo 碰撞检测
+    //碰撞检测
+    if(existsCollision(new Block(this.mainWindow,block.getX()-distance,block.getY()))) return false;
 
-    return false;
+    return true;
   }
-
 
   public boolean canMoveRight(Block block, int distance) {
     //越界检测
     if(this.isOverPanel(block.getX()+distance,block.getY())) return false;
 
-    //todo 碰撞检测
+    //碰撞检测
+    if(existsCollision(new Block(this.mainWindow,block.getX()+distance,block.getY()))) return false;
 
-    return false;
+    return true;
   }
 
   public boolean canMoveBottom(Block block, int distance) {
     //越界检测
     if(this.isOverPanel(block.getX(),block.getY()+distance)) return false;
 
-    //todo 碰撞检测
+    //碰撞检测
+    if(existsCollision(new Block(this.mainWindow,block.getX(),block.getY()+distance))) return false;
+
+    return true;
+  }
+
+  /**
+   *
+   * 碰撞检测
+   * @param b
+   */
+  private boolean existsCollision(Block b) {
+    for(int i=0;i<blocks.length;i++){
+      for(int j=0;j<blocks[i].length;j++){
+        Block block = blocks[i][j];
+        if(block != null){
+         if(block.isCollision(b)) return true;
+        }
+      }
+    }
 
     return false;
   }
+
 }

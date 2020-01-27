@@ -60,7 +60,6 @@ public class MainWindow extends JFrame {
 
     //组件初始化
     mainPanel = new MainPanel(this);
-    mainPanel.setBounds(25,44,180,300);
 
     //往窗口中添加组件
     Container contentPane = this.getContentPane();
@@ -90,7 +89,7 @@ public class MainWindow extends JFrame {
     }
     gBuffer.setColor(getBackground());
     gBuffer.fillRect(0,0,this.getSize().width,this.getSize().height);
-    paint(g);
+    paint(gBuffer);
     g.drawImage(iBuffer,0,0,this);
   }
 
@@ -105,7 +104,6 @@ public class MainWindow extends JFrame {
     Color oldColor = graphics2D.getColor();
     //画背景方块
     drawBackgroundBlock(graphics2D);
-
     //画字符串
     graphics2D.setColor(Color.pink);
     graphics2D.drawString(COPYRIGHT1,41,TITLE_BAR_HEIGHT+375);
@@ -157,7 +155,7 @@ public class MainWindow extends JFrame {
     public void run() {
       while(true){
         try{
-          Thread.sleep(300);
+          Thread.sleep(30);
           MainWindow.this.repaint();
         }catch (Exception e){
           e.printStackTrace();
@@ -165,4 +163,9 @@ public class MainWindow extends JFrame {
       }
     }
   }
+
+  public JPanel getMainPanel() {
+    return mainPanel;
+  }
+
 }

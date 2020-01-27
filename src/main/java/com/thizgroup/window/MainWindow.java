@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -77,6 +78,7 @@ public class MainWindow extends JFrame {
     init();
     //设置窗口是否可见
     this.setVisible(true);
+    new RepaintThread().run();
   }
 
   @Override
@@ -148,6 +150,19 @@ public class MainWindow extends JFrame {
     }
 
     graphics2D.setColor(oldColor);
+  }
 
+  private class  RepaintThread implements Runnable {
+
+    public void run() {
+      while(true){
+        try{
+          Thread.sleep(300);
+          MainWindow.this.repaint();
+        }catch (Exception e){
+          e.printStackTrace();
+        }
+      }
+    }
   }
 }

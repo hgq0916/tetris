@@ -11,8 +11,8 @@ import java.awt.Rectangle;
  */
 public class MetaBlock {
 
-  private static final int BLOCK_WIDTH = 20;
-  private static final int BLOCK_HEIGHT = 20;
+  public static final int BLOCK_WIDTH = 20;
+  public static final int BLOCK_HEIGHT = 20;
 
   private int x = 0;
   private int y = -BLOCK_HEIGHT;//不可见
@@ -116,6 +116,8 @@ public class MetaBlock {
     Color oldColor = g.getColor();
     g.setColor(this.color);
     g.fillRect(this.x,this.y,BLOCK_WIDTH,BLOCK_HEIGHT);
+    g.setColor(Color.RED);
+    g.drawRect(this.x,this.y,BLOCK_WIDTH,BLOCK_HEIGHT);
     g.setColor(oldColor);
   }
 

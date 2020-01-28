@@ -1,19 +1,26 @@
 package com.thizgroup.window;
 
+import com.thizgroup.block.Block;
+import com.thizgroup.block.BlockType;
 import com.thizgroup.block.MetaBlock;
+import com.thizgroup.utils.UIUtils;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Random;
 import javax.swing.JPanel;
 
 public class MainPanel extends JPanel {
 
   private MainWindow mainWindow;
 
+  private BlockFactory blockFactory = new BlockFactory();
+
   private static final int PANEL_WIDTH = 180;
   private static final int PANEL_HEIGHT = 300;
 
   //定义数组存储所有的方块
   private MetaBlock[][] metaBlocks = new MetaBlock[15][9];
+  private Block currentBlock = null;
 
   public MainPanel(MainWindow mainWindow){
 
@@ -21,7 +28,8 @@ public class MainPanel extends JPanel {
     //this.setBackground(new Color(0,0,0));
     this.setBackground(new Color(255,255,255));
     this.setBounds(25,44,PANEL_WIDTH,PANEL_HEIGHT);
-
+    //随机生成方块
+    currentBlock = blockFactory.getRandomBlock();
   }
 
   public boolean isOverPanel(int x,int y){
@@ -38,6 +46,12 @@ public class MainPanel extends JPanel {
   }
 
   private void drawBlocks(Graphics g) {
+
+    //画当前方块
+    if(currentBlock != null){
+      currentBlock.paint(g);
+    }
+
     for(int i=0;i< metaBlocks.length;i++){
       for(int j=0;j< metaBlocks[i].length;j++){
         MetaBlock metaBlock = metaBlocks[i][j];
@@ -131,6 +145,27 @@ public class MainPanel extends JPanel {
     }
 
     return false;
+  }
+
+  private class BlockFactory {
+
+    private Random random = new Random();
+
+    private static final int x = 4*MetaBlock.BLOCK_WIDTH;
+    private static final int y = 0;//-4*MetaBlock.BLOCK_HEIGHT
+
+    public Block getRandomBlock(){
+      //获取随机色
+      Color color = UIUtils.getRandomGeneralColor();
+      //获取随机的方块类型
+      BlockType[] blockTypes = BlockType.values();
+      BlockType blockType = blockTypes[random.nextInt(blockTypes.length)];
+
+      Block block = new Block(MainPanel.this.mainWindow,this.x,this.y,color,blockType);
+
+      return block;
+    }
+
   }
 
 }

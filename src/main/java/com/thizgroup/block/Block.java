@@ -3,6 +3,7 @@ package com.thizgroup.block;
 import com.thizgroup.window.MainWindow;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Arrays;
 
 public class Block {
 
@@ -189,7 +190,7 @@ public class Block {
    * @return 成功或者失败
    */
   public  boolean moveLeft(int step){
-   boolean canMove = false;
+   boolean canMove = true;
    for(int i=0;i<metaBlocks.length;i++){
      MetaBlock metaBlock = metaBlocks[i];
      if(metaBlock == null || !metaBlock.canMoveLeft()){
@@ -237,7 +238,7 @@ public class Block {
       //可以移动
       for(int i=0;i<metaBlocks.length;i++){
         MetaBlock metaBlock = metaBlocks[i];
-        metaBlock.canMoveRight();
+        metaBlock.moveRight();
       }
       return true;
     }
@@ -303,4 +304,14 @@ public class Block {
     return blockType == null?0:blockType.getHeight();
   }
 
+  @Override
+  public String toString() {
+    return "Block{" +
+        "metaBlocks=" + Arrays.toString(metaBlocks) +
+        ", x=" + x +
+        ", y=" + y +
+        ", color=" + color +
+        ", blockType=" + blockType +
+        '}';
+  }
 }

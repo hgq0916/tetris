@@ -116,7 +116,7 @@ public class MetaBlock {
     Color oldColor = g.getColor();
     g.setColor(this.color);
     g.fillRect(this.x,this.y,BLOCK_WIDTH,BLOCK_HEIGHT);
-    g.setColor(Color.RED);
+    g.setColor(Color.BLACK);
     g.drawRect(this.x,this.y,BLOCK_WIDTH,BLOCK_HEIGHT);
     g.setColor(oldColor);
   }
@@ -139,4 +139,12 @@ public class MetaBlock {
     return false;
   }
 
+  @Override
+  public String toString() {
+    return "MetaBlock{" +
+        "x=" + x +
+        ", y=" + y +
+        ", color=" + color +
+        '}';
+  }
 }

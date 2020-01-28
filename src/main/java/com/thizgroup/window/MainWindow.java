@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JFrame;
@@ -57,6 +59,8 @@ public class MainWindow extends JFrame {
     this.setLocation(location);
     //处理窗口关闭事件
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //处理键盘事件
+    this.addKeyListener(new KeyMonitor());
 
     //组件初始化
     mainPanel = new MainPanel(this);
@@ -161,6 +165,16 @@ public class MainWindow extends JFrame {
 
   public JPanel getMainPanel() {
     return mainPanel;
+  }
+
+
+  private class KeyMonitor extends KeyAdapter {
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+      //键盘按下
+      ((MainPanel)MainWindow.this.mainPanel).keyPressed(e);
+    }
   }
 
 }

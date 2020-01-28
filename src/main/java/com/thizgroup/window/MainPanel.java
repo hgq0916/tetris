@@ -6,6 +6,9 @@ import com.thizgroup.block.MetaBlock;
 import com.thizgroup.utils.UIUtils;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Random;
 import javax.swing.JPanel;
 
@@ -18,6 +21,8 @@ public class MainPanel extends JPanel {
   private static final int PANEL_WIDTH = 180;
   private static final int PANEL_HEIGHT = 300;
 
+  private Rectangle panelRectangle = new Rectangle(0,0,PANEL_WIDTH,PANEL_HEIGHT);
+
   //定义数组存储所有的方块
   private MetaBlock[][] metaBlocks = new MetaBlock[15][9];
   private Block currentBlock = null;
@@ -25,8 +30,7 @@ public class MainPanel extends JPanel {
   public MainPanel(MainWindow mainWindow){
 
     this.mainWindow = mainWindow;
-    //this.setBackground(new Color(0,0,0));
-    this.setBackground(new Color(255,255,255));
+    this.setBackground(Color.WHITE);
     this.setBounds(25,44,PANEL_WIDTH,PANEL_HEIGHT);
     //随机生成方块
     currentBlock = blockFactory.getRandomBlock();
@@ -101,7 +105,7 @@ public class MainPanel extends JPanel {
 
   public boolean canMoveLeft(MetaBlock metaBlock, int distance) {
     //越界检测
-    if(this.isOverPanel(metaBlock.getX()-distance, metaBlock.getY())) return false;
+    if(!isRectangleInPanel(new Rectangle(metaBlock.getX()-distance, metaBlock.getY(),MetaBlock.BLOCK_WIDTH,MetaBlock.BLOCK_HEIGHT))) return false;
 
     //碰撞检测
     if(existsCollision(new MetaBlock(this.mainWindow, metaBlock.getX()-distance, metaBlock.getY()))) return false;
@@ -109,10 +113,13 @@ public class MainPanel extends JPanel {
     return true;
   }
 
+  public boolean isRectangleInPanel(Rectangle rectangle){
+    return panelRectangle.contains(rectangle);
+  }
+
   public boolean canMoveRight(MetaBlock metaBlock, int distance) {
     //越界检测
-    if(this.isOverPanel(metaBlock.getX()+distance, metaBlock.getY())) return false;
-
+    if(!isRectangleInPanel(new Rectangle(metaBlock.getX()+distance, metaBlock.getY(),MetaBlock.BLOCK_WIDTH,MetaBlock.BLOCK_HEIGHT))) return false;
     //碰撞检测
     if(existsCollision(new MetaBlock(this.mainWindow, metaBlock.getX()+distance, metaBlock.getY()))) return false;
 
@@ -121,8 +128,7 @@ public class MainPanel extends JPanel {
 
   public boolean canMoveDown(MetaBlock metaBlock, int distance) {
     //越界检测
-    if(this.isOverPanel(metaBlock.getX(), metaBlock.getY()+distance)) return false;
-
+    if(!isRectangleInPanel(new Rectangle(metaBlock.getX(), metaBlock.getY()+distance,MetaBlock.BLOCK_WIDTH,MetaBlock.BLOCK_HEIGHT))) return false;
     //碰撞检测
     if(existsCollision(new MetaBlock(this.mainWindow, metaBlock.getX(), metaBlock.getY()+distance))) return false;
 
@@ -166,6 +172,35 @@ public class MainPanel extends JPanel {
       return block;
     }
 
+  }
+
+  public void keyPressed(KeyEvent e){
+    System.out.println("移动前："+currentBlock);
+    int keyCode = e.getKeyCode();//键盘代码
+    switch (keyCode){
+      case KeyEvent.VK_DOWN:
+        if(currentBlock != null){
+          currentBlock.moveBottom();
+        }
+        break;
+      case KeyEvent.VK_UP:
+        //todo 旋转
+//        if(currentBlock != null){
+//          currentBlock.moveBottom();
+//        }
+        break;
+      case KeyEvent.VK_LEFT:
+        if(currentBlock != null){
+          currentBlock.moveLeftOneStep();
+        }
+        break;
+      case KeyEvent.VK_RIGHT:
+        if(currentBlock != null){
+          currentBlock.moveRightOneStep();
+        }
+        break;
+    }
+    System.out.println("移动后："+currentBlock);
   }
 
 }

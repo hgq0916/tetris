@@ -1,6 +1,6 @@
 package com.thizgroup.window;
 
-import com.thizgroup.block.Block;
+import com.thizgroup.block.MetaBlock;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -13,7 +13,7 @@ public class MainPanel extends JPanel {
   private static final int PANEL_HEIGHT = 300;
 
   //定义数组存储所有的方块
-  private Block[][] blocks = new Block[15][9];
+  private MetaBlock[][] metaBlocks = new MetaBlock[15][9];
 
   public MainPanel(MainWindow mainWindow){
 
@@ -38,11 +38,11 @@ public class MainPanel extends JPanel {
   }
 
   private void drawBlocks(Graphics g) {
-    for(int i=0;i<blocks.length;i++){
-      for(int j=0;j<blocks[i].length;j++){
-        Block block = blocks[i][j];
-        if(block != null){
-          block.paint(g);
+    for(int i=0;i< metaBlocks.length;i++){
+      for(int j=0;j< metaBlocks[i].length;j++){
+        MetaBlock metaBlock = metaBlocks[i][j];
+        if(metaBlock != null){
+          metaBlock.paint(g);
         }
       }
     }
@@ -85,32 +85,32 @@ public class MainPanel extends JPanel {
     g.setColor(oloColor);
   }
 
-  public boolean canMoveLeft(Block block, int distance) {
+  public boolean canMoveLeft(MetaBlock metaBlock, int distance) {
     //越界检测
-    if(this.isOverPanel(block.getX()-distance,block.getY())) return false;
+    if(this.isOverPanel(metaBlock.getX()-distance, metaBlock.getY())) return false;
 
     //碰撞检测
-    if(existsCollision(new Block(this.mainWindow,block.getX()-distance,block.getY()))) return false;
+    if(existsCollision(new MetaBlock(this.mainWindow, metaBlock.getX()-distance, metaBlock.getY()))) return false;
 
     return true;
   }
 
-  public boolean canMoveRight(Block block, int distance) {
+  public boolean canMoveRight(MetaBlock metaBlock, int distance) {
     //越界检测
-    if(this.isOverPanel(block.getX()+distance,block.getY())) return false;
+    if(this.isOverPanel(metaBlock.getX()+distance, metaBlock.getY())) return false;
 
     //碰撞检测
-    if(existsCollision(new Block(this.mainWindow,block.getX()+distance,block.getY()))) return false;
+    if(existsCollision(new MetaBlock(this.mainWindow, metaBlock.getX()+distance, metaBlock.getY()))) return false;
 
     return true;
   }
 
-  public boolean canMoveBottom(Block block, int distance) {
+  public boolean canMoveDown(MetaBlock metaBlock, int distance) {
     //越界检测
-    if(this.isOverPanel(block.getX(),block.getY()+distance)) return false;
+    if(this.isOverPanel(metaBlock.getX(), metaBlock.getY()+distance)) return false;
 
     //碰撞检测
-    if(existsCollision(new Block(this.mainWindow,block.getX(),block.getY()+distance))) return false;
+    if(existsCollision(new MetaBlock(this.mainWindow, metaBlock.getX(), metaBlock.getY()+distance))) return false;
 
     return true;
   }
@@ -120,12 +120,12 @@ public class MainPanel extends JPanel {
    * 碰撞检测
    * @param b
    */
-  private boolean existsCollision(Block b) {
-    for(int i=0;i<blocks.length;i++){
-      for(int j=0;j<blocks[i].length;j++){
-        Block block = blocks[i][j];
-        if(block != null){
-         if(block.isCollision(b)) return true;
+  private boolean existsCollision(MetaBlock b) {
+    for(int i=0;i< metaBlocks.length;i++){
+      for(int j=0;j< metaBlocks[i].length;j++){
+        MetaBlock metaBlock = metaBlocks[i][j];
+        if(metaBlock != null){
+         if(metaBlock.isCollision(b)) return true;
         }
       }
     }

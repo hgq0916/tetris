@@ -9,7 +9,7 @@ import java.awt.Rectangle;
 /***
  * 方块
  */
-public class Block {
+public class MetaBlock {
 
   private static final int BLOCK_WIDTH = 20;
   private static final int BLOCK_HEIGHT = 20;
@@ -20,17 +20,17 @@ public class Block {
 
   private Color color = new Color(0,0,0);
 
-  public Block(MainWindow mainWindow){
+  public MetaBlock(MainWindow mainWindow){
     this.mainWindow = mainWindow;
   }
 
-  public Block(MainWindow mainWindow,int x,int y){
+  public MetaBlock(MainWindow mainWindow,int x,int y){
     this(mainWindow);
     this.x = x;
     this.y = y;
   }
 
-  public Block(MainWindow mainWindow,int x,int y,Color color){
+  public MetaBlock(MainWindow mainWindow,int x,int y,Color color){
     this(mainWindow,x,y);
     this.color = color;
   }
@@ -75,9 +75,9 @@ public class Block {
     return false;
   }
 
-  public boolean canMoveBottom(){
+  public boolean canMoveDown(){
     MainPanel mainPanel = (MainPanel) this.mainWindow.getMainPanel();
-    if(mainPanel.canMoveBottom(this,BLOCK_HEIGHT)){
+    if(mainPanel.canMoveDown(this,BLOCK_HEIGHT)){
       return true;
     }
     return false;
@@ -102,9 +102,9 @@ public class Block {
     return false;
   }
 
-  public boolean moveBottom(){
+  public boolean moveDown(){
 
-    if(canMoveBottom()){
+    if(canMoveDown()){
       this.y = this.y + BLOCK_HEIGHT;
       return true;
     }
@@ -131,8 +131,8 @@ public class Block {
     return new Rectangle((int)x,(int) y, BLOCK_WIDTH, BLOCK_HEIGHT);
   }
 
-  public boolean isCollision(Block block) {
-    if(this.getRect().intersects(block.getRect())) return true;
+  public boolean isCollision(MetaBlock metaBlock) {
+    if(this.getRect().intersects(metaBlock.getRect())) return true;
 
     return false;
   }

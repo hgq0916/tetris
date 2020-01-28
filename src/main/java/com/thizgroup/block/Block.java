@@ -52,7 +52,23 @@ public class Block {
       case TRIANGLE:
         generateTriangleMetaBlocks();
         break;
+      case FIELD:
+        generateFleidMetaBlocks();
+        break;
     }
+  }
+
+  /**
+   *  ||||
+   *  ||||
+   */
+  private void generateFleidMetaBlocks() {
+    int tempX = this.x;
+    int tempY = this.y;
+    metaBlocks[0] = new MetaBlock(this.mainWindow,tempX,tempY,this.color);
+    metaBlocks[1] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY,this.color);
+    metaBlocks[2] = new MetaBlock(this.mainWindow,tempX,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
+    metaBlocks[3] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
   }
 
   /**
@@ -314,4 +330,13 @@ public class Block {
         ", blockType=" + blockType +
         '}';
   }
+
+  /**
+   *
+   * 旋转
+   */
+  public void rotate() {
+
+  }
+
 }

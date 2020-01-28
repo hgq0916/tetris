@@ -7,7 +7,6 @@ import com.thizgroup.utils.UIUtils;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 import javax.swing.JPanel;
@@ -184,10 +183,10 @@ public class MainPanel extends JPanel {
         }
         break;
       case KeyEvent.VK_UP:
-        //todo 旋转
-//        if(currentBlock != null){
-//          currentBlock.moveBottom();
-//        }
+        //旋转
+        if(currentBlock != null){
+          currentBlock.rotate();
+        }
         break;
       case KeyEvent.VK_LEFT:
         if(currentBlock != null){

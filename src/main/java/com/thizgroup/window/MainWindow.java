@@ -6,10 +6,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -77,7 +77,9 @@ public class MainWindow extends JFrame {
     init();
     //设置窗口是否可见
     this.setVisible(true);
-    new RepaintThread().run();
+    Timer timer = new Timer(); // 1. 创建Timer实例，关联线程不能是daemon(守护/后台)线程
+    RepaintTimerTask repaintTimerTask = new RepaintTimerTask();
+    timer.schedule(repaintTimerTask, 0L, 100L); // 3. 通过Timer定时定频率调用fooTimerTask的业务代码
   }
 
   @Override
@@ -150,17 +152,10 @@ public class MainWindow extends JFrame {
     graphics2D.setColor(oldColor);
   }
 
-  private class  RepaintThread implements Runnable {
+  private class RepaintTimerTask extends TimerTask {
 
     public void run() {
-      while(true){
-        try{
-          Thread.sleep(30);
-          MainWindow.this.repaint();
-        }catch (Exception e){
-          e.printStackTrace();
-        }
-      }
+        MainWindow.this.repaint();
     }
   }
 

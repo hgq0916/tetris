@@ -143,9 +143,4 @@ public class LeftLBlock extends Block{
 
     return true;
   }
-
-
-
-
-
 }

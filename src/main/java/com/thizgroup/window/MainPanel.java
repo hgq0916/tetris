@@ -313,7 +313,25 @@ public class MainPanel extends JPanel {
    * 消除方块
    */
   private void eliminateBlocks() {
-
+    if(this.metaBlocks == null || this.metaBlocks.length == 0) return;
+    MetaBlock[][] metaBlocks = this.metaBlocks;
+    for(int i=0;i<metaBlocks.length;i++){
+      boolean canEliminate = true;
+      for(int j=0;j<metaBlocks[i].length;j++){
+        MetaBlock metaBlock = metaBlocks[i][j];
+        if(metaBlock == null){
+          canEliminate = false;
+          break;
+        }
+      }
+      if(canEliminate){
+        //可以消除
+        for(int j=0;j<metaBlocks[i].length;j++){
+          //消除方块
+          metaBlocks[i][j] = null;
+        }
+      }
+    }
   }
 
 }

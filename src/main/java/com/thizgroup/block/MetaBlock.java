@@ -147,4 +147,25 @@ public class MetaBlock {
         ", color=" + color +
         '}';
   }
+
+  /**
+   * 获取所在的行
+   * @return
+   */
+  public int getRow(){
+    return this.x/BLOCK_WIDTH;
+  }
+
+  /**
+   * 获取所在的列
+   * @return
+   */
+  public int getCol(){
+    return this.y/BLOCK_HEIGHT;
+  }
+
+  public MainWindow getMainWindow() {
+    return mainWindow;
+  }
+
 }

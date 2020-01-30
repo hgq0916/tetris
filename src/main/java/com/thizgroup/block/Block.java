@@ -5,154 +5,25 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Arrays;
 
-public class Block {
+public abstract class Block {
 
-  protected MetaBlock[] metaBlocks = new MetaBlock[4];
+  protected MetaBlock[][] metaBlocks = {};
 
-  private int x;//左上角点x坐标
-  private int y;//左上角点y坐标
-  private Color color = Color.BLACK;
-  private BlockType blockType = BlockType.LEFT_BROKEN_LINE;
-  private MainWindow mainWindow;
+  protected int x;//左上角点x坐标
+  protected int y;//左上角点y坐标
+  protected Color color = Color.BLACK;
+  protected BlockType blockType;
+  protected MainWindow mainWindow;
 
   public Block(MainWindow mainWindow){
     this.mainWindow = mainWindow;
   }
 
-  public Block(MainWindow mainWindow,int x,int y,Color color,BlockType blockType){
+  public Block(MainWindow mainWindow,int x,int y,Color color){
     this(mainWindow);
     this.x = x;
     this.y = y;
     this.color = color;
-    this.blockType = blockType;
-
-    generateMetaBlocks();
-  }
-
-  /**
-   * 生成方块
-   */
-  private void generateMetaBlocks() {
-    switch (this.blockType){
-      case LEFT_BROKEN_LINE:
-        generateLeftBrokenLineMetaBlocks();
-        break;
-      case RIGHT_BROKEN_LINE:
-        generateRightBrokenLineMetaBlocks();
-        break;
-      case LEFT_L:
-        generateLeftLMetaBlocks();
-        break;
-      case RIGHT_L:
-        generateRightLMetaBlocks();
-        break;
-      case VERTICAL_LINE:
-        generateVerticalLineMetaBlocks();
-        break;
-      case TRIANGLE:
-        generateTriangleMetaBlocks();
-        break;
-      case FIELD:
-        generateFleidMetaBlocks();
-        break;
-    }
-  }
-
-  /**
-   *  ||||
-   *  ||||
-   */
-  private void generateFleidMetaBlocks() {
-    int tempX = this.x;
-    int tempY = this.y;
-    metaBlocks[0] = new MetaBlock(this.mainWindow,tempX,tempY,this.color);
-    metaBlocks[1] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY,this.color);
-    metaBlocks[2] = new MetaBlock(this.mainWindow,tempX,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[3] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
-  }
-
-  /**
-   * 	||
-   * 	||
-   * 	||
-   * 	||
-   */
-  private void generateVerticalLineMetaBlocks() {
-    int tempX = this.x;
-    int tempY = this.y;
-    metaBlocks[0] = new MetaBlock(this.mainWindow,tempX,tempY,this.color);
-    metaBlocks[1] = new MetaBlock(this.mainWindow,tempX,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[2] = new MetaBlock(this.mainWindow,tempX,tempY+2*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[3] = new MetaBlock(this.mainWindow,tempX,tempY+3*MetaBlock.BLOCK_HEIGHT,this.color);
-  }
-
-  /**
-   *      ||
-   * 		  ||
-   * 	  ||||
-   */
-  private void generateRightLMetaBlocks() {
-    int tempX = this.x;
-    int tempY = this.y;
-    metaBlocks[0] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY,this.color);
-    metaBlocks[1] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[2] = new MetaBlock(this.mainWindow,tempX,tempY+2*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[3] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY+2*MetaBlock.BLOCK_HEIGHT,this.color);
-  }
-
-  /**
-   * 	||
-   * 	||
-   * 	||||
-   */
-  private void generateLeftLMetaBlocks() {
-    int tempX = this.x;
-    int tempY = this.y;
-    metaBlocks[0] = new MetaBlock(this.mainWindow,tempX,tempY,this.color);
-    metaBlocks[1] = new MetaBlock(this.mainWindow,tempX,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[2] = new MetaBlock(this.mainWindow,tempX,tempY+2*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[3] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY+2*MetaBlock.BLOCK_HEIGHT,this.color);
-  }
-
-  /**
-   * 	  ||
-   * 	  ||||
-   * 		  ||
-   */
-  private void generateRightBrokenLineMetaBlocks() {
-    int tempX = this.x;
-    int tempY = this.y;
-    metaBlocks[0] = new MetaBlock(this.mainWindow,tempX,tempY,this.color);
-    metaBlocks[1] = new MetaBlock(this.mainWindow,tempX,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[2] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[3] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY+2*MetaBlock.BLOCK_HEIGHT,this.color);
-  }
-
-  /**
-   * 		  ||
-   * 	  ||||
-   * 	  ||
-   */
-  private void generateLeftBrokenLineMetaBlocks() {
-    int tempX = this.x;
-    int tempY = this.y;
-    metaBlocks[0] = new MetaBlock(this.mainWindow,tempX,tempY,this.color);
-    metaBlocks[1] = new MetaBlock(this.mainWindow,tempX,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[2] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[3] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY+2*MetaBlock.BLOCK_HEIGHT,this.color);
-  }
-
-  /**
-   * 	   ||
-   * 	||||||
-   */
-  private void generateTriangleMetaBlocks() {
-    int tempX = this.x;
-    int tempY = this.y;
-    metaBlocks[0] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY,this.color);
-    metaBlocks[1] = new MetaBlock(this.mainWindow,tempX,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[2] = new MetaBlock(this.mainWindow,tempX+1*MetaBlock.BLOCK_WIDTH,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
-    metaBlocks[3] = new MetaBlock(this.mainWindow,tempX+2*MetaBlock.BLOCK_WIDTH,tempY+1*MetaBlock.BLOCK_HEIGHT,this.color);
   }
 
   public int getX() {
@@ -192,10 +63,15 @@ public class Block {
    * @param g
    */
   public void paint(Graphics g){
-    for(int i=0;i<metaBlocks.length;i++){
-      MetaBlock metaBlock = metaBlocks[i];
-      if(metaBlock != null){
-        metaBlock.paint(g);
+    MetaBlock[][] metaBlocksTemp = metaBlocks;
+    if(metaBlocksTemp != null && metaBlocksTemp.length != 0){
+      for(int i=0;i<metaBlocksTemp.length;i++){
+        for(int j=0;j<metaBlocksTemp[i].length;j++){
+          MetaBlock metaBlock = metaBlocksTemp[i][j];
+          if(metaBlock != null){
+            metaBlock.paint(g);
+          }
+        }
       }
     }
   }
@@ -207,19 +83,28 @@ public class Block {
    */
   public  boolean moveLeft(int step){
    boolean canMove = true;
-   for(int i=0;i<metaBlocks.length;i++){
-     MetaBlock metaBlock = metaBlocks[i];
-     if(metaBlock == null || !metaBlock.canMoveLeft()){
-       canMove = false;
-       break;
-     }
-   }
+    MetaBlock[][] metaBlocksTemp = metaBlocks;
+    if(metaBlocksTemp == null && metaBlocksTemp.length == 0) return true;
+
+      for(int i=0;i<metaBlocksTemp.length;i++){
+        for(int j=0;j<metaBlocksTemp[i].length;j++){
+          MetaBlock metaBlock = metaBlocksTemp[i][j];
+          if(metaBlock != null && !metaBlock.canMoveLeft()){
+            canMove = false;
+            break;
+          }
+        }
+      }
 
    if(canMove){
      //可以移动
-     for(int i=0;i<metaBlocks.length;i++){
-       MetaBlock metaBlock = metaBlocks[i];
-       metaBlock.moveLeft();
+     for(int i=0;i<metaBlocksTemp.length;i++){
+       for(int j=0;j<metaBlocksTemp[i].length;j++){
+         MetaBlock metaBlock = metaBlocksTemp[i][j];
+         if(metaBlock != null){
+           metaBlock.moveLeft();
+         }
+       }
      }
      return true;
    }
@@ -242,19 +127,28 @@ public class Block {
    */
   public boolean moveRight(int step){
     boolean canMove = true;
-    for(int i=0;i<metaBlocks.length;i++){
-      MetaBlock metaBlock = metaBlocks[i];
-      if(metaBlock == null || !metaBlock.canMoveRight()){
-        canMove = false;
-        break;
+    MetaBlock[][] metaBlocksTemp = metaBlocks;
+    if(metaBlocksTemp == null && metaBlocksTemp.length == 0) return true;
+
+    for(int i=0;i<metaBlocksTemp.length;i++){
+      for(int j=0;j<metaBlocksTemp[i].length;j++){
+        MetaBlock metaBlock = metaBlocksTemp[i][j];
+        if(metaBlock != null && !metaBlock.canMoveRight()){
+          canMove = false;
+          break;
+        }
       }
     }
 
     if(canMove){
       //可以移动
-      for(int i=0;i<metaBlocks.length;i++){
-        MetaBlock metaBlock = metaBlocks[i];
-        metaBlock.moveRight();
+      for(int i=0;i<metaBlocksTemp.length;i++){
+        for(int j=0;j<metaBlocksTemp[i].length;j++){
+          MetaBlock metaBlock = metaBlocksTemp[i][j];
+          if(metaBlock != null){
+            metaBlock.moveRight();
+          }
+        }
       }
       return true;
     }
@@ -277,19 +171,28 @@ public class Block {
    */
   public boolean moveDown(int step){
     boolean canMove = true;
-    for(int i=0;i<metaBlocks.length;i++){
-      MetaBlock metaBlock = metaBlocks[i];
-      if(metaBlock == null || !metaBlock.canMoveDown()){
-        canMove = false;
-        break;
+    MetaBlock[][] metaBlocksTemp = metaBlocks;
+    if(metaBlocksTemp == null && metaBlocksTemp.length == 0) return true;
+
+    for(int i=0;i<metaBlocksTemp.length;i++){
+      for(int j=0;j<metaBlocksTemp[i].length;j++){
+        MetaBlock metaBlock = metaBlocksTemp[i][j];
+        if(metaBlock != null && !metaBlock.canMoveDown()){
+          canMove = false;
+          break;
+        }
       }
     }
 
     if(canMove){
       //可以移动
-      for(int i=0;i<metaBlocks.length;i++){
-        MetaBlock metaBlock = metaBlocks[i];
-        metaBlock.moveDown();
+      for(int i=0;i<metaBlocksTemp.length;i++){
+        for(int j=0;j<metaBlocksTemp[i].length;j++){
+          MetaBlock metaBlock = metaBlocksTemp[i][j];
+          if(metaBlock != null){
+            metaBlock.moveDown();
+          }
+        }
       }
       return true;
     }
@@ -317,7 +220,10 @@ public class Block {
    * @return
    */
   public int getHeight(){
-    return blockType == null?0:blockType.getHeight();
+
+    if(metaBlocks == null || metaBlocks.length == 0) return 0;
+
+    return metaBlocks.length;
   }
 
   @Override
@@ -335,8 +241,6 @@ public class Block {
    *
    * 旋转
    */
-  public void rotate() {
-
-  }
+  public abstract  void rotate();
 
 }

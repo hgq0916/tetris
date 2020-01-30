@@ -2,7 +2,14 @@ package com.thizgroup.window;
 
 import com.thizgroup.block.Block;
 import com.thizgroup.block.BlockType;
+import com.thizgroup.block.FieldBlock;
+import com.thizgroup.block.LeftBrokenLineBlock;
+import com.thizgroup.block.LeftLBlock;
 import com.thizgroup.block.MetaBlock;
+import com.thizgroup.block.RightBrokenLineBlock;
+import com.thizgroup.block.RightLBlock;
+import com.thizgroup.block.TriangleBlock;
+import com.thizgroup.block.VerticalLineBlock;
 import com.thizgroup.utils.UIUtils;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -113,7 +120,8 @@ public class MainPanel extends JPanel {
   }
 
   public boolean isRectangleInPanel(Rectangle rectangle){
-    return panelRectangle.contains(rectangle);
+    return rectangle.getX()>=0 && (rectangle.getX()+rectangle.getWidth())<=PANEL_WIDTH
+        && (rectangle.getY()+rectangle.getHeight())<=PANEL_HEIGHT;
   }
 
   public boolean canMoveRight(MetaBlock metaBlock, int distance) {
@@ -152,6 +160,18 @@ public class MainPanel extends JPanel {
     return false;
   }
 
+  /**
+   * 碰撞检测
+   * @param x
+   * @param y
+   */
+  public boolean existsBlockCollision(int x, int y) {
+    if(!isRectangleInPanel(new Rectangle(x,y,MetaBlock.BLOCK_WIDTH,MetaBlock.BLOCK_HEIGHT))) return true;
+    //碰撞检测
+    if(existsCollision(new MetaBlock(this.mainWindow, x, y))) return true;
+    return false;
+  }
+
   private class BlockFactory {
 
     private Random random = new Random();
@@ -164,9 +184,37 @@ public class MainPanel extends JPanel {
       Color color = UIUtils.getRandomGeneralColor();
       //获取随机的方块类型
       BlockType[] blockTypes = BlockType.values();
-      BlockType blockType = blockTypes[random.nextInt(blockTypes.length)];
+      //BlockType blockType = blockTypes[random.nextInt(blockTypes.length)];
+      BlockType blockType = BlockType.TRIANGLE;
 
-      Block block = new Block(MainPanel.this.mainWindow,this.x,this.y,color,blockType);
+
+      /**
+       * 生成方块
+       */
+      Block block = null;
+        switch (blockType){
+          case LEFT_BROKEN_LINE:
+            block = new LeftBrokenLineBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+            break;
+          case RIGHT_BROKEN_LINE:
+            block = new RightBrokenLineBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+            break;
+          case LEFT_L:
+            block = new LeftLBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+            break;
+          case RIGHT_L:
+            block = new RightLBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+            break;
+          case VERTICAL_LINE:
+            block = new VerticalLineBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+            break;
+          case TRIANGLE:
+            block = new TriangleBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+            break;
+          case FIELD:
+            block = new FieldBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+            break;
+        }
 
       return block;
     }

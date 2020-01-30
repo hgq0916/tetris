@@ -167,9 +167,14 @@ public class MainPanel extends JPanel {
    */
   public boolean existsBlockCollision(int x, int y) {
     if(!isRectangleInPanel(new Rectangle(x,y,MetaBlock.BLOCK_WIDTH,MetaBlock.BLOCK_HEIGHT))) return true;
+    if(isCollisionPanelTop(new Rectangle(x,y,MetaBlock.BLOCK_WIDTH,MetaBlock.BLOCK_HEIGHT))) return true;
     //碰撞检测
     if(existsCollision(new MetaBlock(this.mainWindow, x, y))) return true;
     return false;
+  }
+
+  public boolean isCollisionPanelTop(Rectangle rectangle){
+    return rectangle.getY()<0;
   }
 
   private class BlockFactory {
@@ -185,7 +190,7 @@ public class MainPanel extends JPanel {
       //获取随机的方块类型
       BlockType[] blockTypes = BlockType.values();
       //BlockType blockType = blockTypes[random.nextInt(blockTypes.length)];
-      BlockType blockType = BlockType.TRIANGLE;
+      BlockType blockType = BlockType.VERTICAL_LINE;
 
 
       /**

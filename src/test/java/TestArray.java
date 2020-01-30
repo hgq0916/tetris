@@ -5,8 +5,7 @@ public class TestArray {
   @Test
   public void fun1(){
     int[][] arr = {
-        {0,1,0},
-        {1,1,1},
+        {1,2,3,4}
     };
     print(arr);
 
@@ -14,7 +13,7 @@ public class TestArray {
 
     for(int i=0;i<newArr.length;i++){
       for(int j=0;j<newArr[i].length;j++){
-        newArr[i][j] = arr[newArr[i].length-1-j][newArr.length-1-i];
+        newArr[i][j] = arr[newArr[i].length-1-j][i];
       }
     }
 

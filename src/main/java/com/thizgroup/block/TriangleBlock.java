@@ -30,11 +30,11 @@ public class TriangleBlock extends Block{
 
     for(int i=0;i<blocks.length;i++){
       for(int j=0;j<blocks[i].length;j++){
-        if(j == this.center[0] && (blocks.length-1-i) == this.center[1]){
+        if((blocks[i].length-1-j) == this.center[0] && i == this.center[1]){
           tempCenter[0] = i;
           tempCenter[1] = j;
         }
-        blocks[i][j] = tempMetaBlocks[blocks[i].length-1-j][blocks.length-1-i];
+        blocks[i][j] = tempMetaBlocks[blocks[i].length-1-j][i];
       }
     }
 

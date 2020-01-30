@@ -14,7 +14,7 @@ public class TestArray {
 
     for(int i=0;i<newArr.length;i++){
       for(int j=0;j<newArr[i].length;j++){
-        newArr[i][j] = arr[j][newArr.length-1-i];
+        newArr[i][j] = arr[newArr[i].length-1-j][newArr.length-1-i];
       }
     }
 

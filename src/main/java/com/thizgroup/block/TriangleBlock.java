@@ -22,8 +22,55 @@ public class TriangleBlock extends Block{
   }
 
   private boolean rightRotate() {
-    //todo
-    return false;
+    MetaBlock[][] tempMetaBlocks = this.metaBlocks;
+    if(tempMetaBlocks == null || tempMetaBlocks.length ==0) return true;
+    MetaBlock[][] blocks = new MetaBlock[tempMetaBlocks[0].length][tempMetaBlocks.length];
+
+    int[] tempCenter = new int[2];
+
+    for(int i=0;i<blocks.length;i++){
+      for(int j=0;j<blocks[i].length;j++){
+        if(j == this.center[0] && (blocks.length-1-i) == this.center[1]){
+          tempCenter[0] = i;
+          tempCenter[1] = j;
+        }
+        blocks[i][j] = tempMetaBlocks[blocks[i].length-1-j][blocks.length-1-i];
+      }
+    }
+
+    //重新计算数组第一个方块的坐标
+    MetaBlock centerBlock = blocks[tempCenter[0]][tempCenter[1]];
+    int centerX = centerBlock.getX();
+    int centerY = centerBlock.getY();
+
+    MetaBlock[][] newBlocks = new MetaBlock[blocks.length][blocks[0].length];
+
+    //矩阵第一个位置的坐标
+    int firstX = centerX - tempCenter[1]*MetaBlock.BLOCK_WIDTH;
+    int firstY = centerY - tempCenter[0]*MetaBlock.BLOCK_HEIGHT;
+
+    for(int i=0;i<blocks.length;i++){
+      for(int j=0;j<blocks[i].length;j++){
+        MetaBlock metaBlock = blocks[i][j];
+        if(metaBlock != null){
+          //计算新的坐标
+          int newX = firstX + j*MetaBlock.BLOCK_WIDTH;
+          int newY = firstY + i * MetaBlock.BLOCK_HEIGHT;
+          //碰撞检测
+          MainPanel mainPanel = (MainPanel) this.mainWindow.getMainPanel();
+          if(mainPanel.existsBlockCollision(newX,newY)){//检测到碰撞
+            return false;
+          }
+          newBlocks[i][j] = new MetaBlock(metaBlock.getMainWindow(),newX,newY,metaBlock.getColor());
+        }
+      }
+    }
+
+    //旋转完成
+    this.metaBlocks = newBlocks;
+    this.center = tempCenter;
+
+    return true;
   }
 
   private boolean leftRotate() {

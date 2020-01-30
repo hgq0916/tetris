@@ -189,8 +189,7 @@ public class MainPanel extends JPanel {
       Color color = UIUtils.getRandomGeneralColor();
       //获取随机的方块类型
       BlockType[] blockTypes = BlockType.values();
-      //BlockType blockType = blockTypes[random.nextInt(blockTypes.length)];
-      BlockType blockType = BlockType.RIGHT_BROKEN_LINE;
+      BlockType blockType = blockTypes[random.nextInt(blockTypes.length)];
 
 
       /**

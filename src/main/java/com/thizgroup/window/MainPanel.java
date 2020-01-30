@@ -190,7 +190,7 @@ public class MainPanel extends JPanel {
       //获取随机的方块类型
       BlockType[] blockTypes = BlockType.values();
       //BlockType blockType = blockTypes[random.nextInt(blockTypes.length)];
-      BlockType blockType = BlockType.LEFT_BROKEN_LINE;
+      BlockType blockType = BlockType.RIGHT_BROKEN_LINE;
 
 
       /**

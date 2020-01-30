@@ -201,6 +201,27 @@ public abstract class Block {
   }
 
   /**
+   * 判断是否可以向下移动
+   */
+  public boolean canMoveDown(int step) {
+    boolean canMove = true;
+    MetaBlock[][] metaBlocksTemp = metaBlocks;
+    if (metaBlocksTemp == null && metaBlocksTemp.length == 0)
+      return true;
+
+    for (int i = 0; i < metaBlocksTemp.length; i++) {
+      for (int j = 0; j < metaBlocksTemp[i].length; j++) {
+        MetaBlock metaBlock = metaBlocksTemp[i][j];
+        if (metaBlock != null && !metaBlock.canMoveDown()) {
+          canMove = false;
+          break;
+        }
+      }
+    }
+    return canMove;
+  }
+
+  /**
    * 下移一步
    * @return
    */
@@ -242,5 +263,9 @@ public abstract class Block {
    * 旋转
    */
   public abstract  void rotate();
+
+  public MetaBlock[][] getMetaBlocks() {
+    return metaBlocks;
+  }
 
 }

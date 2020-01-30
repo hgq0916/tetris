@@ -145,6 +145,8 @@ public class MetaBlock {
         "x=" + x +
         ", y=" + y +
         ", color=" + color +
+        ", row=" + getRow() +
+        ", col=" + getCol() +
         '}';
   }
 
@@ -153,7 +155,7 @@ public class MetaBlock {
    * @return
    */
   public int getRow(){
-    return this.x/BLOCK_WIDTH;
+    return this.y/BLOCK_HEIGHT;
   }
 
   /**
@@ -161,7 +163,7 @@ public class MetaBlock {
    * @return
    */
   public int getCol(){
-    return this.y/BLOCK_HEIGHT;
+    return this.x/BLOCK_WIDTH;
   }
 
   public MainWindow getMainWindow() {

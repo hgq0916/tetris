@@ -38,8 +38,8 @@ public class MainPanel extends JPanel {
     this.mainWindow = mainWindow;
     this.setBackground(Color.WHITE);
     this.setBounds(25,44,PANEL_WIDTH,PANEL_HEIGHT);
-    //随机生成方块
-    currentBlock = blockFactory.getRandomBlock();
+    //启动方块移动线程
+    new Thread(new BlockMoveThread()).start();
   }
 
   public boolean isOverPanel(int x,int y){
@@ -173,6 +173,23 @@ public class MainPanel extends JPanel {
     return false;
   }
 
+  public void putCurrentBlockIntoBlockArray(){
+    if(this.currentBlock == null) return;
+    Block currentBlock = this.currentBlock;
+    MetaBlock[][] metaBlocks = currentBlock.getMetaBlocks();
+    if(metaBlocks == null || metaBlocks.length == 0) return;
+    for(int i=0;i<metaBlocks.length;i++){
+      for(int j=0;j<metaBlocks[i].length;j++){
+        MetaBlock metaBlock = metaBlocks[i][j];
+        if(metaBlock != null){
+          int row = metaBlock.getRow();
+          int col = metaBlock.getCol();
+          this.metaBlocks[row][col] = metaBlock;
+        }
+      }
+    }
+  }
+
   public boolean isCollisionPanelTop(Rectangle rectangle){
     return rectangle.getY()<0;
   }
@@ -252,6 +269,51 @@ public class MainPanel extends JPanel {
         break;
     }
     System.out.println("移动后："+currentBlock);
+  }
+
+  private class BlockMoveThread implements Runnable {
+
+    public void run() {
+      while (true){
+        if(MainPanel.this.currentBlock == null){
+          //创建一个随机的方块
+          Block randomBlock = MainPanel.this.blockFactory.getRandomBlock();
+          MainPanel.this.currentBlock = randomBlock;
+        }
+        //向下移动方块
+        MainPanel.this.currentBlock.moveDown(1);
+        if(!MainPanel.this.currentBlock.canMoveDown(1)){
+          //不能移动,等待
+          try {
+            Thread.sleep(500);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+          if(!MainPanel.this.currentBlock.canMoveDown(1)){
+            //方块不能移动，将方块移入数组
+            MainPanel.this.putCurrentBlockIntoBlockArray();
+            //消除方块
+            MainPanel.this.eliminateBlocks();
+            //重新生成新的方块
+            Block randomBlock = MainPanel.this.blockFactory.getRandomBlock();
+            MainPanel.this.currentBlock = randomBlock;
+          }
+        }
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+
+    }
+  }
+
+  /**
+   * 消除方块
+   */
+  private void eliminateBlocks() {
+
   }
 
 }

@@ -284,11 +284,11 @@ public class MainPanel extends JPanel {
         MainPanel.this.currentBlock.moveDown(1);
         if(!MainPanel.this.currentBlock.canMoveDown(1)){
           //不能移动,等待
-          try {
-            Thread.sleep(500);
-          } catch (InterruptedException e) {
-            e.printStackTrace();
-          }
+//          try {
+//            Thread.sleep(20);
+//          } catch (InterruptedException e) {
+//            e.printStackTrace();
+//          }
           if(!MainPanel.this.currentBlock.canMoveDown(1)){
             //方块不能移动，将方块移入数组
             MainPanel.this.putCurrentBlockIntoBlockArray();
@@ -326,10 +326,21 @@ public class MainPanel extends JPanel {
       }
       if(canEliminate){
         //可以消除
-        for(int j=0;j<metaBlocks[i].length;j++){
-          //消除方块
-          metaBlocks[i][j] = null;
+        if(i != 0){//不是第一行
+          //上部所有方块下移
+          for(int k=i-1;k>0;k--){
+            for(int g=0;g<metaBlocks[k].length;g++){
+              MetaBlock metaBlock = metaBlocks[k][g];
+              if(metaBlock != null){
+                metaBlock.setY(metaBlock.getY()+MetaBlock.BLOCK_HEIGHT);
+              }
+              metaBlocks[k+1][g] = metaBlocks[k][g];
+            }
+          }
         }
+
+        //继续消除消除方块
+        eliminateBlocks();
       }
     }
   }

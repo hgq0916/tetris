@@ -13,10 +13,17 @@ import com.thizgroup.block.VerticalLineBlock;
 import com.thizgroup.utils.UIUtils;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import org.springframework.util.ResourceUtils;
 
 public class MainPanel extends JPanel {
 
@@ -27,7 +34,13 @@ public class MainPanel extends JPanel {
   private static final int PANEL_WIDTH = 180;
   private static final int PANEL_HEIGHT = 300;
 
+  private boolean gameOver =false;
+  private Image gameOverImage = null;
+
   private Rectangle panelRectangle = new Rectangle(0,0,PANEL_WIDTH,PANEL_HEIGHT);
+
+  BlockMoveThread blockMoveThread = null;
+  Boolean blockMoveThreadAlive = false;
 
   //定义数组存储所有的方块
   private MetaBlock[][] metaBlocks = new MetaBlock[15][9];
@@ -36,10 +49,39 @@ public class MainPanel extends JPanel {
   public MainPanel(MainWindow mainWindow){
 
     this.mainWindow = mainWindow;
-    this.setBackground(Color.BLACK);
+    this.setBackground(Color.WHITE);
     this.setBounds(25,44,PANEL_WIDTH,PANEL_HEIGHT);
+    //生成图片
+    try {
+      File cfgFile = ResourceUtils.getFile("classpath:images/gameover.png");
+      //要想保存这个对象的话你要把image声明为BufferedImage 类型
+      BufferedImage image = ImageIO.read(cfgFile);
+      this.gameOverImage = image;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
     //启动方块移动线程
-    new Thread(new BlockMoveThread()).start();
+    this.startBlockMoveThread();
+  }
+
+  public void startBlockMoveThread(){
+    if(blockMoveThreadAlive) return ;
+    gameOver = false;
+    //启动线程
+    if(this.blockMoveThread == null){
+      this.blockMoveThread = new BlockMoveThread();
+    }
+    this.blockMoveThreadAlive = true;
+    new Thread(this.blockMoveThread).start();
+  }
+
+  public void stopBlockMoveThread(){
+    if(!this.blockMoveThreadAlive) return;
+    System.out.println("游戏结束");
+    gameOver = true;
+    this.blockMoveThreadAlive = false;
+    this.blockMoveThread = null;
   }
 
   public boolean isOverPanel(int x,int y){
@@ -50,9 +92,13 @@ public class MainPanel extends JPanel {
   public void paint(Graphics g) {
     super.paint(g);
     //画线
-    //drawLine(g);
+    drawLine(g);
     //画方块
     drawBlocks(g);
+    if(gameOver){
+      //游戏结束
+      g.drawImage(gameOverImage,40,100,100,80,null);
+    }
   }
 
   private void drawBlocks(Graphics g) {
@@ -199,7 +245,7 @@ public class MainPanel extends JPanel {
     private Random random = new Random();
 
     private static final int x = 4*MetaBlock.BLOCK_WIDTH;
-    private static final int y = 0;//-4*MetaBlock.BLOCK_HEIGHT
+    private static final int y = -4*MetaBlock.BLOCK_WIDTH;
 
     public Block getRandomBlock(){
       //获取随机色
@@ -243,7 +289,6 @@ public class MainPanel extends JPanel {
   }
 
   public void keyPressed(KeyEvent e){
-    System.out.println("移动前："+currentBlock);
     int keyCode = e.getKeyCode();//键盘代码
     switch (keyCode){
       case KeyEvent.VK_DOWN:
@@ -268,27 +313,39 @@ public class MainPanel extends JPanel {
         }
         break;
     }
-    System.out.println("移动后："+currentBlock);
   }
 
   private class BlockMoveThread implements Runnable {
 
     public void run() {
-      while (true){
+      while (MainPanel.this.blockMoveThreadAlive){
+        System.out.println("移动前："+currentBlock);
         if(MainPanel.this.currentBlock == null){
           //创建一个随机的方块
           Block randomBlock = MainPanel.this.blockFactory.getRandomBlock();
+          //尝试将方块移到0点位置
+          boolean flag =true;
+          do{
+            flag = randomBlock.moveDown(1);
+          }while (flag && randomBlock.getY()<0);
           MainPanel.this.currentBlock = randomBlock;
+          //碰撞检测
+          if(!randomBlock.canMoveDown(1)){
+            //todo
+            MainPanel.this.stopBlockMoveThread();
+            return;
+          }
+          try {
+            Thread.sleep(900);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+          continue;
         }
         //向下移动方块
         MainPanel.this.currentBlock.moveDown(1);
         if(!MainPanel.this.currentBlock.canMoveDown(1)){
           //不能移动,等待
-//          try {
-//            Thread.sleep(20);
-//          } catch (InterruptedException e) {
-//            e.printStackTrace();
-//          }
           if(!MainPanel.this.currentBlock.canMoveDown(1)){
             //方块不能移动，将方块移入数组
             MainPanel.this.putCurrentBlockIntoBlockArray();
@@ -296,14 +353,25 @@ public class MainPanel extends JPanel {
             MainPanel.this.eliminateBlocks();
             //重新生成新的方块
             Block randomBlock = MainPanel.this.blockFactory.getRandomBlock();
+            //尝试将方块移到0点位置
+            boolean flag =true;
+            do{
+              flag = randomBlock.moveDown(1);
+            }while (flag && randomBlock.getY()<0);
             MainPanel.this.currentBlock = randomBlock;
+            //碰撞检测
+            if(!randomBlock.canMoveDown(1)){
+              MainPanel.this.stopBlockMoveThread();
+              return;
+            }
           }
         }
         try {
-          Thread.sleep(1000);
+          Thread.sleep(900);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
+        System.out.println("移动后："+currentBlock);
       }
 
     }

@@ -106,6 +106,7 @@ public abstract class Block {
          }
        }
      }
+     this.x = x-MetaBlock.BLOCK_WIDTH;
      return true;
    }
 
@@ -150,6 +151,7 @@ public abstract class Block {
           }
         }
       }
+      this.x = x+MetaBlock.BLOCK_WIDTH;
       return true;
     }
 
@@ -194,6 +196,7 @@ public abstract class Block {
           }
         }
       }
+      this.y = y+MetaBlock.BLOCK_HEIGHT;
       return true;
     }
 

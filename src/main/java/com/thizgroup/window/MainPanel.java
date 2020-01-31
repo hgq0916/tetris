@@ -49,7 +49,7 @@ public class MainPanel extends JPanel {
   public MainPanel(MainWindow mainWindow){
 
     this.mainWindow = mainWindow;
-    this.setBackground(Color.WHITE);
+    this.setBackground(Color.BLACK);
     this.setBounds(25,44,PANEL_WIDTH,PANEL_HEIGHT);
     //生成图片
     try {
@@ -92,7 +92,7 @@ public class MainPanel extends JPanel {
   public void paint(Graphics g) {
     super.paint(g);
     //画线
-    drawLine(g);
+    //drawLine(g);
     //画方块
     drawBlocks(g);
     if(gameOver){

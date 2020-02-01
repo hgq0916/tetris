@@ -100,6 +100,9 @@ public class MainWindow extends JFrame {
     contentPane.add(mainPanel);
     contentPane.add(new BottomPanel(this));
     contentPane.add(rightPanel);
+    contentPane.add(new LeftBackgroundPanel());
+    contentPane.add(new BottomBackgroundPanel());
+    contentPane.add(new RightBackgroundPanel());
   }
 
   public MainWindow(){
@@ -144,7 +147,7 @@ public class MainWindow extends JFrame {
     super.paint(src);
     Color oldColor = src.getColor();
     //画背景方块
-    drawBackgroundBlock(src);
+    ///drawBackgroundBlock(src);
     src.setColor(oldColor);
   }
 
@@ -200,25 +203,9 @@ public class MainWindow extends JFrame {
     Color oldColor = src.getColor();
     src.setColor(new Color(108,201,218));
 
-    final int bgcXStart1 = 18;
-    final int bgcYStart1 = 14;
-    int bgcX = bgcXStart1;
-    int bgcY = bgcYStart1;
 
-    for(int i=0;i<23;i++){
-      src.fillRect(bgcX,bgcY+TITLE_BAR_HEIGHT,BGC_BLOCK_WIDTH,BGC_BLOCK_HEIGHT);
-      bgcY = bgcYStart1 + (i+1)*(BGC_BLOCK_HEIGHT + 5);
-    }
 
-    final int bgcXStart2 = 208;
-    final int bgcYStart2 = 14;
-    int bgcX1 = bgcXStart2;
-    int bgcY1 = bgcYStart2;
 
-    for(int i=0;i<23;i++){
-      src.fillRect(bgcX1,bgcY1+TITLE_BAR_HEIGHT,BGC_BLOCK_WIDTH,BGC_BLOCK_HEIGHT);
-      bgcY1 = bgcYStart2 + (i+1)*(BGC_BLOCK_HEIGHT + 5);
-    }
 
     final int bgcXStart3 = 33;
     final int bgcYStart3 = 344;
@@ -295,5 +282,109 @@ public class MainWindow extends JFrame {
 
   }
 
+
+  private class LeftBackgroundPanel extends JPanel {
+
+    final int bgcXStart1 = 15;
+    final int bgcYStart1 = 14;
+
+    public LeftBackgroundPanel(){
+      this.setLayout(null);
+      this.setBackground(Color.BLACK);
+      this.setBounds(bgcXStart1,bgcYStart1,10,340);
+    }
+
+    @Override
+    public void paint(Graphics src) {
+      super.paint(src);
+      Graphics2D graphics2D = (Graphics2D) src;
+      Color oldColor = graphics2D.getColor();
+      graphics2D.setColor(Color.BLACK);
+      graphics2D.fillRect(bgcXStart1,bgcYStart1,180,10);
+
+      final int bgcXStart1 = 0;
+      final int bgcYStart1 = 0;
+      int bgcX = bgcXStart1;
+      int bgcY = bgcYStart1;
+
+      src.setColor(new Color(108,201,218));
+      for(int i=0;i<23;i++){
+        src.fillRect(bgcX,bgcY,BGC_BLOCK_WIDTH,BGC_BLOCK_HEIGHT);
+        bgcY = bgcYStart1 + (i+1)*(BGC_BLOCK_HEIGHT+5);
+      }
+
+      graphics2D.setColor(oldColor);
+    }
+  }
+
+  private class BottomBackgroundPanel extends JPanel {
+
+    final int bgcXStart2 = 31;
+    final int bgcYStart2 = 344;
+
+    public BottomBackgroundPanel(){
+      this.setLayout(null);
+      this.setBackground(Color.BLACK);
+      this.setBounds(bgcXStart2,bgcYStart2,174,10);
+    }
+
+    @Override
+    public void paint(Graphics src) {
+      super.paint(src);
+      Graphics2D graphics2D = (Graphics2D) src;
+      Color oldColor = graphics2D.getColor();
+      graphics2D.setColor(Color.BLACK);
+      graphics2D.fillRect(bgcXStart2,bgcYStart2,174,10);
+
+      final int bgcXStart3 = 0;
+      final int bgcYStart3 = 0;
+      int bgcX3 = bgcXStart3;
+      int bgcY3 = bgcYStart3;
+
+      src.setColor(new Color(108,201,218));
+      for(int i=0;i<11;i++){
+        src.fillRect(bgcX3,bgcY3,BGC_BLOCK_WIDTH,BGC_BLOCK_HEIGHT);
+        bgcX3 = bgcXStart3 + (i+1)*(BGC_BLOCK_HEIGHT + 6);
+      }
+
+      graphics2D.setColor(oldColor);
+    }
+  }
+
+  private class RightBackgroundPanel extends JPanel {
+
+    final int bgcXStart1 = 206;
+    final int bgcYStart1 = 14;
+
+    public RightBackgroundPanel(){
+      this.setLayout(null);
+      this.setBackground(Color.BLACK);
+      this.setBounds(bgcXStart1,bgcYStart1,10,340);
+    }
+
+    @Override
+    public void paint(Graphics src) {
+      super.paint(src);
+      Graphics2D graphics2D = (Graphics2D) src;
+      Color oldColor = graphics2D.getColor();
+      graphics2D.setColor(Color.BLACK);
+      graphics2D.fillRect(bgcXStart1,bgcYStart1,10,340);
+
+      final int bgcXStart1 = 0;
+      final int bgcYStart1 = 0;
+      int bgcX = bgcXStart1;
+      int bgcY = bgcYStart1;
+
+      src.setColor(new Color(108,201,218));
+      for(int i=0;i<23;i++){
+        src.fillRect(bgcX,bgcY,BGC_BLOCK_WIDTH,BGC_BLOCK_HEIGHT);
+        bgcY = bgcYStart1 + (i+1)*(BGC_BLOCK_HEIGHT+5);
+      }
+
+      src.setColor(new Color(108,201,218));
+
+      graphics2D.setColor(oldColor);
+    }
+  }
 
 }

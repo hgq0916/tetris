@@ -1,5 +1,6 @@
 package com.thizgroup.window;
 
+import com.thizgroup.block.Block;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -10,10 +11,15 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import org.springframework.util.ResourceUtils;
 
 public class MainWindow extends JFrame {
 
@@ -31,6 +37,13 @@ public class MainWindow extends JFrame {
 
   public static final int BGC_BLOCK_WIDTH = 10;
   public static final int BGC_BLOCK_HEIGHT = 10;
+
+  private Block nextBlock = null;
+  private int score = 0;
+  private int level = 0;
+  private Image nextImage = null;
+  private Image scoreImage = null;
+  private Image levelImage = null;
 
 
   private Image iBuffer;
@@ -79,6 +92,17 @@ public class MainWindow extends JFrame {
   public MainWindow(){
     //窗口初始化
     init();
+    //初始化图片
+    try {
+      File nextFile = ResourceUtils.getFile("classpath:images/next.png");
+      this.nextImage = ImageIO.read(nextFile);
+      File scoreFile = ResourceUtils.getFile("classpath:images/score.png");
+      this.scoreImage = ImageIO.read(scoreFile);
+      File levelFile = ResourceUtils.getFile("classpath:images/level.png");
+      this.levelImage = ImageIO.read(levelFile);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     //设置窗口是否可见
     this.setVisible(true);
     Timer timer = new Timer(); // 1. 创建Timer实例，关联线程不能是daemon(守护/后台)线程
@@ -115,7 +139,26 @@ public class MainWindow extends JFrame {
     graphics2D.drawString(COPYRIGHT1,41,TITLE_BAR_HEIGHT+375);
     graphics2D.drawString(COPYRIGHT2,52,TITLE_BAR_HEIGHT+389);
 
+    //画右侧图片
+    graphics2D.drawImage(nextImage,250,20+TITLE_BAR_HEIGHT,70,14,null);
+    showNextBlock(graphics2D);
+    graphics2D.drawImage(scoreImage,250,120+TITLE_BAR_HEIGHT,70,14,null);
+    graphics2D.setColor(new Color(7,255,255));
+    graphics2D.drawString(score+"",280,160+TITLE_BAR_HEIGHT);
+    graphics2D.drawImage(levelImage,250,200+TITLE_BAR_HEIGHT,70,14,null);
+    graphics2D.drawString(level+"",280,250+TITLE_BAR_HEIGHT);
+
     graphics2D.setColor(oldColor);
+  }
+
+  private void showNextBlock(Graphics2D graphics2D) {
+    //todo
+  }
+
+  public void plusScore(int score){
+    this.score = this.score + score;
+    //计算等级,满一百分升一级
+    this.level = this.score/100;
   }
 
   private void drawBackgroundBlock(Graphics2D graphics2D) {

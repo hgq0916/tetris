@@ -405,6 +405,8 @@ public class MainPanel extends JPanel {
               metaBlocks[k+1][g] = metaBlocks[k][g];
             }
           }
+          //加分
+          this.mainWindow.plusScore(10);
         }
 
         //继续消除消除方块

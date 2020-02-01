@@ -10,7 +10,7 @@ public class TriangleBlock extends Block{
 
   public TriangleBlock(MainWindow mainWindow, int x, int y, Color color) {
     super(mainWindow, x, y, color);
-    this.blockType = BlockType.VERTICAL_LINE;
+    this.blockType = BlockType.TRIANGLE;
     init();
   }
 
@@ -143,5 +143,10 @@ public class TriangleBlock extends Block{
     this.metaBlocks = metaBlocks;
   }
 
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    TriangleBlock triangleBlock = new TriangleBlock(this.mainWindow,this.x,this.y,this.color);
+    return triangleBlock;
+  }
 
 }

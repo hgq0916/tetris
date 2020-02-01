@@ -10,7 +10,7 @@ public class LeftLBlock extends Block{
 
   public LeftLBlock(MainWindow mainWindow, int x, int y, Color color) {
     super(mainWindow, x, y, color);
-    this.blockType = BlockType.VERTICAL_LINE;
+    this.blockType = BlockType.LEFT_L;
     init();
   }
 
@@ -143,4 +143,11 @@ public class LeftLBlock extends Block{
 
     return true;
   }
+
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    LeftLBlock leftLBlock = new LeftLBlock(this.mainWindow,this.x,this.y,this.color);
+    return leftLBlock;
+  }
+
 }

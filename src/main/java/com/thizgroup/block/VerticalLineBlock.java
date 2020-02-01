@@ -140,5 +140,10 @@ public class VerticalLineBlock extends Block{
     return true;
   }
 
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    VerticalLineBlock verticalLineBlock = new VerticalLineBlock(this.mainWindow,this.x,this.y,this.color);
+    return verticalLineBlock;
+  }
 
 }

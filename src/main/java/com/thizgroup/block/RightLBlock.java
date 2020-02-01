@@ -10,7 +10,7 @@ public class RightLBlock extends Block{
 
   public RightLBlock(MainWindow mainWindow, int x, int y, Color color) {
     super(mainWindow, x, y, color);
-    this.blockType = BlockType.VERTICAL_LINE;
+    this.blockType = BlockType.RIGHT_L;
     init();
   }
 
@@ -142,6 +142,12 @@ public class RightLBlock extends Block{
     this.center = tempCenter;
 
     return true;
+  }
+
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    RightLBlock rightLBlock = new RightLBlock(this.mainWindow,this.x,this.y,this.color);
+    return rightLBlock;
   }
 
 }

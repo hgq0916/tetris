@@ -10,7 +10,7 @@ public class RightBrokenLineBlock extends Block{
 
   public RightBrokenLineBlock(MainWindow mainWindow, int x, int y, Color color) {
     super(mainWindow, x, y, color);
-    this.blockType = BlockType.VERTICAL_LINE;
+    this.blockType = BlockType.RIGHT_BROKEN_LINE;
     init();
   }
 
@@ -144,6 +144,12 @@ public class RightBrokenLineBlock extends Block{
     center[0] = 1;
     center[1] = 0;
     this.metaBlocks = metaBlocks;
+  }
+
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    RightBrokenLineBlock rightBrokenLineBlock = new RightBrokenLineBlock(this.mainWindow,this.x,this.y,this.color);
+    return rightBrokenLineBlock;
   }
 
 }

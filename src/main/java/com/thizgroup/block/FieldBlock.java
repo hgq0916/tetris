@@ -7,7 +7,7 @@ public class FieldBlock extends Block{
 
   public FieldBlock(MainWindow mainWindow, int x, int y, Color color) {
     super(mainWindow, x, y, color);
-    this.blockType = BlockType.VERTICAL_LINE;
+    this.blockType = BlockType.FIELD;
     init();
   }
 
@@ -26,5 +26,10 @@ public class FieldBlock extends Block{
     return ;
   }
 
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    FieldBlock fieldBlock = new FieldBlock(this.mainWindow,this.x,this.y,this.color);
+    return fieldBlock;
+  }
 
 }

@@ -144,5 +144,10 @@ public class LeftBrokenLineBlock extends Block{
     this.metaBlocks = metaBlocks;
   }
 
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    LeftBrokenLineBlock leftBrokenLineBlock = new LeftBrokenLineBlock(this.mainWindow,this.x,this.y,this.color);
+    return leftBrokenLineBlock;
+  }
 
 }

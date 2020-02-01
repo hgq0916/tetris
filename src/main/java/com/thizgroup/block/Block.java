@@ -26,6 +26,11 @@ public abstract class Block {
     this.color = color;
   }
 
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    throw new CloneNotSupportedException();
+  }
+
   public int getX() {
     return x;
   }

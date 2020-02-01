@@ -45,6 +45,7 @@ public class MainPanel extends JPanel {
   //定义数组存储所有的方块
   private MetaBlock[][] metaBlocks = new MetaBlock[15][9];
   private Block currentBlock = null;
+  private Block nextBlock = null;
 
   public MainPanel(MainWindow mainWindow){
 
@@ -254,35 +255,33 @@ public class MainPanel extends JPanel {
       BlockType[] blockTypes = BlockType.values();
       BlockType blockType = blockTypes[random.nextInt(blockTypes.length)];
 
-
       /**
        * 生成方块
        */
       Block block = null;
-        switch (blockType){
-          case LEFT_BROKEN_LINE:
-            block = new LeftBrokenLineBlock(MainPanel.this.mainWindow,this.x,this.y,color);
-            break;
-          case RIGHT_BROKEN_LINE:
-            block = new RightBrokenLineBlock(MainPanel.this.mainWindow,this.x,this.y,color);
-            break;
-          case LEFT_L:
-            block = new LeftLBlock(MainPanel.this.mainWindow,this.x,this.y,color);
-            break;
-          case RIGHT_L:
-            block = new RightLBlock(MainPanel.this.mainWindow,this.x,this.y,color);
-            break;
-          case VERTICAL_LINE:
-            block = new VerticalLineBlock(MainPanel.this.mainWindow,this.x,this.y,color);
-            break;
-          case TRIANGLE:
-            block = new TriangleBlock(MainPanel.this.mainWindow,this.x,this.y,color);
-            break;
-          case FIELD:
-            block = new FieldBlock(MainPanel.this.mainWindow,this.x,this.y,color);
-            break;
-        }
-
+      switch (blockType){
+        case LEFT_BROKEN_LINE:
+          block = new LeftBrokenLineBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+          break;
+        case RIGHT_BROKEN_LINE:
+          block = new RightBrokenLineBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+          break;
+        case LEFT_L:
+          block = new LeftLBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+          break;
+        case RIGHT_L:
+          block = new RightLBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+          break;
+        case VERTICAL_LINE:
+          block = new VerticalLineBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+          break;
+        case TRIANGLE:
+          block = new TriangleBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+          break;
+        case FIELD:
+          block = new FieldBlock(MainPanel.this.mainWindow,this.x,this.y,color);
+          break;
+      }
       return block;
     }
 
@@ -322,7 +321,19 @@ public class MainPanel extends JPanel {
       while (MainPanel.this.blockMoveThreadAlive){
         if(MainPanel.this.currentBlock == null){
           //创建一个随机的方块
-          Block randomBlock = MainPanel.this.blockFactory.getRandomBlock();
+          Block randomBlock = null;
+          if(MainPanel.this.nextBlock != null){
+            randomBlock = MainPanel.this.nextBlock;
+            //生成下一个方块
+            MainPanel.this.nextBlock = blockFactory.getRandomBlock();
+            MainPanel.this.mainWindow.updateNextBlock(MainPanel.this.nextBlock);
+          }else {
+            randomBlock = blockFactory.getRandomBlock();
+            //生成下一个方块
+            MainPanel.this.nextBlock = blockFactory.getRandomBlock();
+            MainPanel.this.mainWindow.updateNextBlock(MainPanel.this.nextBlock);
+          }
+
           //尝试将方块移到0点位置
           boolean flag =true;
           do{
@@ -352,7 +363,18 @@ public class MainPanel extends JPanel {
             //消除方块
             MainPanel.this.eliminateBlocks();
             //重新生成新的方块
-            Block randomBlock = MainPanel.this.blockFactory.getRandomBlock();
+            Block randomBlock = null;
+            if(MainPanel.this.nextBlock != null){
+              randomBlock = MainPanel.this.nextBlock;
+              //生成下一个方块
+              MainPanel.this.nextBlock = blockFactory.getRandomBlock();
+              MainPanel.this.mainWindow.updateNextBlock(MainPanel.this.nextBlock);
+            }else {
+              randomBlock = blockFactory.getRandomBlock();
+              //生成下一个方块
+              MainPanel.this.nextBlock = blockFactory.getRandomBlock();
+              MainPanel.this.mainWindow.updateNextBlock(MainPanel.this.nextBlock);
+            }
             //尝试将方块移到0点位置
             boolean flag =true;
             do{

@@ -1,6 +1,15 @@
 package com.thizgroup.window;
 
 import com.thizgroup.block.Block;
+import com.thizgroup.block.BlockType;
+import com.thizgroup.block.FieldBlock;
+import com.thizgroup.block.LeftBrokenLineBlock;
+import com.thizgroup.block.LeftLBlock;
+import com.thizgroup.block.MetaBlock;
+import com.thizgroup.block.RightBrokenLineBlock;
+import com.thizgroup.block.RightLBlock;
+import com.thizgroup.block.TriangleBlock;
+import com.thizgroup.block.VerticalLineBlock;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -142,23 +151,66 @@ public class MainWindow extends JFrame {
     //画右侧图片
     graphics2D.drawImage(nextImage,250,20+TITLE_BAR_HEIGHT,70,14,null);
     showNextBlock(graphics2D);
-    graphics2D.drawImage(scoreImage,250,120+TITLE_BAR_HEIGHT,70,14,null);
+    graphics2D.drawImage(scoreImage,250,140+TITLE_BAR_HEIGHT,70,14,null);
     graphics2D.setColor(new Color(7,255,255));
-    graphics2D.drawString(score+"",280,160+TITLE_BAR_HEIGHT);
-    graphics2D.drawImage(levelImage,250,200+TITLE_BAR_HEIGHT,70,14,null);
-    graphics2D.drawString(level+"",280,250+TITLE_BAR_HEIGHT);
+    graphics2D.drawString(score+"",280,180+TITLE_BAR_HEIGHT);
+    graphics2D.drawImage(levelImage,250,220+TITLE_BAR_HEIGHT,70,14,null);
+    graphics2D.drawString(level+"",280,270+TITLE_BAR_HEIGHT);
 
     graphics2D.setColor(oldColor);
   }
 
   private void showNextBlock(Graphics2D graphics2D) {
-    //todo
+    if(nextBlock != null){
+      nextBlock.paint(graphics2D);
+    }
   }
 
   public void plusScore(int score){
     this.score = this.score + score;
     //计算等级,满一百分升一级
     this.level = this.score/100;
+  }
+
+  public void updateNextBlock(Block block){
+    if(block == null) {
+      this.nextBlock = null;
+      return;
+    }
+    Color color = block.getColor();
+    BlockType blockType = block.getBlockType();
+
+    /**
+     * 生成方块
+     */
+    Block nextBlock = null;
+    int x = 260;
+    int y = 40+TITLE_BAR_HEIGHT;
+    switch (blockType){
+      case LEFT_BROKEN_LINE:
+        nextBlock = new LeftBrokenLineBlock(this,x,y,color);
+        break;
+      case RIGHT_BROKEN_LINE:
+        nextBlock = new RightBrokenLineBlock(this,x,y,color);
+        break;
+      case LEFT_L:
+        nextBlock = new LeftLBlock(this,x,y,color);
+        break;
+      case RIGHT_L:
+        nextBlock = new RightLBlock(this,x,y,color);
+        break;
+      case VERTICAL_LINE:
+        nextBlock = new VerticalLineBlock(this,x,y,color);
+        break;
+      case TRIANGLE:
+        nextBlock = new TriangleBlock(this,x,y,color);
+        break;
+      case FIELD:
+        nextBlock = new FieldBlock(this,x,y,color);
+        break;
+    }
+
+    this.nextBlock = nextBlock;
   }
 
   private void drawBackgroundBlock(Graphics2D graphics2D) {

@@ -39,8 +39,6 @@ public class MainWindow extends JFrame {
 
   //窗口标题
   public static final String WIN_TITLE = "俄罗斯方块-户雪敏专用版";
-  public static final String COPYRIGHT1 = "made by gangquan.hu";
-  public static final String COPYRIGHT2 = "xuemin.hu®版权所有";
   //窗口背景色
   public static final Color WIN_BGC = new Color(0,0,0);
 

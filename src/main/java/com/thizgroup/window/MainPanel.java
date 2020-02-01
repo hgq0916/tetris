@@ -289,6 +289,7 @@ public class MainPanel extends JPanel {
   }
 
   public void keyPressed(KeyEvent e){
+    if(gameOver) return;
     int keyCode = e.getKeyCode();//键盘代码
     switch (keyCode){
       case KeyEvent.VK_DOWN:
@@ -319,7 +320,6 @@ public class MainPanel extends JPanel {
 
     public void run() {
       while (MainPanel.this.blockMoveThreadAlive){
-        System.out.println("移动前："+currentBlock);
         if(MainPanel.this.currentBlock == null){
           //创建一个随机的方块
           Block randomBlock = MainPanel.this.blockFactory.getRandomBlock();
@@ -371,7 +371,6 @@ public class MainPanel extends JPanel {
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
-        System.out.println("移动后："+currentBlock);
       }
 
     }

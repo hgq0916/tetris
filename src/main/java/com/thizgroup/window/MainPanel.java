@@ -14,14 +14,20 @@ import com.thizgroup.utils.UIUtils;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import org.springframework.util.ResourceUtils;
 
@@ -36,8 +42,10 @@ public class MainPanel extends JPanel {
 
   private boolean gameOver =false;
   private Image gameOverImage = null;
+  private Image restartImage = null;
 
   private Rectangle panelRectangle = new Rectangle(0,0,PANEL_WIDTH,PANEL_HEIGHT);
+  private Rectangle restartRectangle = new Rectangle(50, 200, 80, 25);
 
   BlockMoveThread blockMoveThread = null;
   Boolean blockMoveThreadAlive = false;
@@ -49,15 +57,29 @@ public class MainPanel extends JPanel {
 
   public MainPanel(MainWindow mainWindow){
 
+    this.setLayout(null);
     this.mainWindow = mainWindow;
     this.setBackground(Color.BLACK);
     this.setBounds(25,44,PANEL_WIDTH,PANEL_HEIGHT);
     //生成图片
     try {
       File cfgFile = ResourceUtils.getFile("classpath:images/gameover.png");
+      this.gameOverImage = ImageIO.read(cfgFile);
+      File restartFile = ResourceUtils.getFile("classpath:images/restart.png");
       //要想保存这个对象的话你要把image声明为BufferedImage 类型
-      BufferedImage image = ImageIO.read(cfgFile);
-      this.gameOverImage = image;
+      BufferedImage restartImage = ImageIO.read(restartFile);
+      this.restartImage = restartImage;
+      //处理点击事件
+      this.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          Point point = e.getPoint();
+          if(gameOver && restartRectangle.contains(point)){
+            MainPanel.this.startBlockMoveThread();
+          }
+
+        }
+      });
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -68,6 +90,7 @@ public class MainPanel extends JPanel {
 
   public void startBlockMoveThread(){
     if(blockMoveThreadAlive) return ;
+    initData();
     gameOver = false;
     //启动线程
     if(this.blockMoveThread == null){
@@ -77,9 +100,15 @@ public class MainPanel extends JPanel {
     new Thread(this.blockMoveThread).start();
   }
 
+  private void initData() {
+    this.metaBlocks = new MetaBlock[15][9];
+    this.currentBlock = null;
+    this.nextBlock = null;
+    this.mainWindow.resetScore();
+  }
+
   public void stopBlockMoveThread(){
     if(!this.blockMoveThreadAlive) return;
-    System.out.println("游戏结束");
     gameOver = true;
     this.blockMoveThreadAlive = false;
     this.blockMoveThread = null;
@@ -99,6 +128,12 @@ public class MainPanel extends JPanel {
     if(gameOver){
       //游戏结束
       g.drawImage(gameOverImage,40,100,100,80,null);
+      g.drawImage(restartImage, 50, 200, 80, 25, new ImageObserver() {
+        public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+          System.out.println("fsfsd");
+          return false;
+        }
+      });
     }
   }
 

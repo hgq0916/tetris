@@ -251,6 +251,11 @@ public class MainWindow extends JFrame {
     graphics2D.setColor(oldColor);
   }
 
+  public void resetScore() {
+    this.score = 0;
+    this.level = this.score/10;
+  }
+
   private class RepaintTimerTask extends TimerTask {
 
     public void run() {

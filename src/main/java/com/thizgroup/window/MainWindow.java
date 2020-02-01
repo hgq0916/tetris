@@ -60,6 +60,7 @@ public class MainWindow extends JFrame {
 
   //窗口组件
   private JPanel mainPanel = null;
+  private JPanel rightPanel = null;
 
   /**
    * 窗口初始化
@@ -86,6 +87,7 @@ public class MainWindow extends JFrame {
 
     //组件初始化
     mainPanel = new MainPanel(this);
+    rightPanel = new RightPanel();
 
     //往窗口中添加组件
     Container contentPane = this.getContentPane();
@@ -97,6 +99,7 @@ public class MainWindow extends JFrame {
 
     contentPane.add(mainPanel);
     contentPane.add(new BottomPanel(this));
+    contentPane.add(rightPanel);
   }
 
   public MainWindow(){
@@ -142,27 +145,7 @@ public class MainWindow extends JFrame {
     Color oldColor = src.getColor();
     //画背景方块
     drawBackgroundBlock(src);
-    //画字符串
-    //src.setColor(Color.pink);
-    //src.drawString(COPYRIGHT1,41,TITLE_BAR_HEIGHT+375);
-    //src.drawString(COPYRIGHT2,52,TITLE_BAR_HEIGHT+389);
-
-    //画右侧图片
-    src.drawImage(nextImage,250,20+TITLE_BAR_HEIGHT,70,14,null);
-    showNextBlock(src);
-    src.drawImage(scoreImage,250,140+TITLE_BAR_HEIGHT,70,14,null);
-    src.setColor(new Color(7,255,255));
-    src.drawString(score+"",280,180+TITLE_BAR_HEIGHT);
-    src.drawImage(levelImage,250,220+TITLE_BAR_HEIGHT,70,14,null);
-    src.drawString(level+"",280,270+TITLE_BAR_HEIGHT);
-
     src.setColor(oldColor);
-  }
-
-  private void showNextBlock(Graphics src) {
-    if(nextBlock != null){
-      nextBlock.paint(src);
-    }
   }
 
   public void plusScore(int score){
@@ -183,8 +166,8 @@ public class MainWindow extends JFrame {
      * 生成方块
      */
     Block nextBlock = null;
-    int x = 260;
-    int y = 40+TITLE_BAR_HEIGHT;
+    int x = 25;
+    int y = 40;
     switch (blockType){
       case LEFT_BROKEN_LINE:
         nextBlock = new LeftBrokenLineBlock(this,x,y,color);
@@ -275,5 +258,42 @@ public class MainWindow extends JFrame {
       ((MainPanel)MainWindow.this.mainPanel).keyPressed(e);
     }
   }
+
+  private class RightPanel extends JPanel {
+
+    public RightPanel(){
+      this.setLayout(null);
+      this.setBackground(Color.BLACK);
+      this.setBounds(240,TITLE_BAR_HEIGHT,100,300);
+    }
+
+    @Override
+    public void paint(Graphics src) {
+      //画字符串
+      Graphics2D graphics2D = (Graphics2D) src;
+      Color oldColor = graphics2D.getColor();
+      graphics2D.setColor(Color.BLACK);
+      graphics2D.fillRect(0,0,100,300);
+
+      //画右侧图片
+      src.drawImage(nextImage,10,20,70,14,null);
+      showNextBlock(src);
+      src.drawImage(scoreImage,10,140,70,14,null);
+      src.setColor(new Color(7,255,255));
+      src.drawString(score+"",40,180);
+      src.drawImage(levelImage,10,220,70,14,null);
+      src.drawString(level+"",40,270);
+
+      graphics2D.setColor(oldColor);
+    }
+
+    private void showNextBlock(Graphics src) {
+      if(nextBlock != null){
+        nextBlock.paint(src);
+      }
+    }
+
+  }
+
 
 }

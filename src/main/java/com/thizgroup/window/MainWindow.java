@@ -96,6 +96,7 @@ public class MainWindow extends JFrame {
     contentPane.setBackground(WIN_BGC);
 
     contentPane.add(mainPanel);
+    contentPane.add(new BottomPanel(this));
   }
 
   public MainWindow(){
@@ -116,7 +117,7 @@ public class MainWindow extends JFrame {
     this.setVisible(true);
     Timer timer = new Timer(); // 1. 创建Timer实例，关联线程不能是daemon(守护/后台)线程
     RepaintTimerTask repaintTimerTask = new RepaintTimerTask();
-    timer.schedule(repaintTimerTask, 0L, 100L); // 3. 通过Timer定时定频率调用fooTimerTask的业务代码
+    timer.schedule(repaintTimerTask, 50L, 50L); // 3. 通过Timer定时定频率调用fooTimerTask的业务代码
   }
 
   @Override
@@ -138,31 +139,29 @@ public class MainWindow extends JFrame {
   @Override
   public void paint(Graphics src) {
     super.paint(src);
-
-    Graphics2D graphics2D = (Graphics2D) src;
-    Color oldColor = graphics2D.getColor();
+    Color oldColor = src.getColor();
     //画背景方块
-    drawBackgroundBlock(graphics2D);
+    drawBackgroundBlock(src);
     //画字符串
-    graphics2D.setColor(Color.pink);
-    graphics2D.drawString(COPYRIGHT1,41,TITLE_BAR_HEIGHT+375);
-    graphics2D.drawString(COPYRIGHT2,52,TITLE_BAR_HEIGHT+389);
+    //src.setColor(Color.pink);
+    //src.drawString(COPYRIGHT1,41,TITLE_BAR_HEIGHT+375);
+    //src.drawString(COPYRIGHT2,52,TITLE_BAR_HEIGHT+389);
 
     //画右侧图片
-    graphics2D.drawImage(nextImage,250,20+TITLE_BAR_HEIGHT,70,14,null);
-    showNextBlock(graphics2D);
-    graphics2D.drawImage(scoreImage,250,140+TITLE_BAR_HEIGHT,70,14,null);
-    graphics2D.setColor(new Color(7,255,255));
-    graphics2D.drawString(score+"",280,180+TITLE_BAR_HEIGHT);
-    graphics2D.drawImage(levelImage,250,220+TITLE_BAR_HEIGHT,70,14,null);
-    graphics2D.drawString(level+"",280,270+TITLE_BAR_HEIGHT);
+    src.drawImage(nextImage,250,20+TITLE_BAR_HEIGHT,70,14,null);
+    showNextBlock(src);
+    src.drawImage(scoreImage,250,140+TITLE_BAR_HEIGHT,70,14,null);
+    src.setColor(new Color(7,255,255));
+    src.drawString(score+"",280,180+TITLE_BAR_HEIGHT);
+    src.drawImage(levelImage,250,220+TITLE_BAR_HEIGHT,70,14,null);
+    src.drawString(level+"",280,270+TITLE_BAR_HEIGHT);
 
-    graphics2D.setColor(oldColor);
+    src.setColor(oldColor);
   }
 
-  private void showNextBlock(Graphics2D graphics2D) {
+  private void showNextBlock(Graphics src) {
     if(nextBlock != null){
-      nextBlock.paint(graphics2D);
+      nextBlock.paint(src);
     }
   }
 
@@ -213,10 +212,10 @@ public class MainWindow extends JFrame {
     this.nextBlock = nextBlock;
   }
 
-  private void drawBackgroundBlock(Graphics2D graphics2D) {
+  private void drawBackgroundBlock(Graphics src) {
 
-    Color oldColor = graphics2D.getColor();
-    graphics2D.setColor(new Color(108,201,218));
+    Color oldColor = src.getColor();
+    src.setColor(new Color(108,201,218));
 
     final int bgcXStart1 = 18;
     final int bgcYStart1 = 14;
@@ -224,7 +223,7 @@ public class MainWindow extends JFrame {
     int bgcY = bgcYStart1;
 
     for(int i=0;i<23;i++){
-      graphics2D.fillRect(bgcX,bgcY+TITLE_BAR_HEIGHT,BGC_BLOCK_WIDTH,BGC_BLOCK_HEIGHT);
+      src.fillRect(bgcX,bgcY+TITLE_BAR_HEIGHT,BGC_BLOCK_WIDTH,BGC_BLOCK_HEIGHT);
       bgcY = bgcYStart1 + (i+1)*(BGC_BLOCK_HEIGHT + 5);
     }
 
@@ -234,7 +233,7 @@ public class MainWindow extends JFrame {
     int bgcY1 = bgcYStart2;
 
     for(int i=0;i<23;i++){
-      graphics2D.fillRect(bgcX1,bgcY1+TITLE_BAR_HEIGHT,BGC_BLOCK_WIDTH,BGC_BLOCK_HEIGHT);
+      src.fillRect(bgcX1,bgcY1+TITLE_BAR_HEIGHT,BGC_BLOCK_WIDTH,BGC_BLOCK_HEIGHT);
       bgcY1 = bgcYStart2 + (i+1)*(BGC_BLOCK_HEIGHT + 5);
     }
 
@@ -244,11 +243,11 @@ public class MainWindow extends JFrame {
     int bgcY3 = bgcYStart3;
 
     for(int i=0;i<11;i++){
-      graphics2D.fillRect(bgcX3,bgcY3+TITLE_BAR_HEIGHT,BGC_BLOCK_WIDTH,BGC_BLOCK_HEIGHT);
+      src.fillRect(bgcX3,bgcY3+TITLE_BAR_HEIGHT,BGC_BLOCK_WIDTH,BGC_BLOCK_HEIGHT);
       bgcX3 = bgcXStart3 + (i+1)*(BGC_BLOCK_HEIGHT + 6);
     }
 
-    graphics2D.setColor(oldColor);
+    src.setColor(oldColor);
   }
 
   public void resetScore() {

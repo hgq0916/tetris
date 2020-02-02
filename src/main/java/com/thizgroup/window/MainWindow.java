@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.imageio.ImageIO;
@@ -108,12 +109,15 @@ public class MainWindow extends JFrame {
     init();
     //初始化图片
     try {
-      File nextFile = ResourceUtils.getFile("classpath:images/next.png");
-      this.nextImage = ImageIO.read(nextFile);
-      File scoreFile = ResourceUtils.getFile("classpath:images/score.png");
-      this.scoreImage = ImageIO.read(scoreFile);
-      File levelFile = ResourceUtils.getFile("classpath:images/level.png");
-      this.levelImage = ImageIO.read(levelFile);
+      InputStream nextStream = this.getClass().getClassLoader()
+          .getResourceAsStream("images/next.png");
+      this.nextImage = ImageIO.read(nextStream);
+      InputStream scoreStream = this.getClass().getClassLoader()
+          .getResourceAsStream("images/score.png");
+      this.scoreImage = ImageIO.read(scoreStream);
+      InputStream levelStream = this.getClass().getClassLoader()
+          .getResourceAsStream("images/level.png");
+      this.levelImage = ImageIO.read(levelStream);
     } catch (IOException e) {
       e.printStackTrace();
     }

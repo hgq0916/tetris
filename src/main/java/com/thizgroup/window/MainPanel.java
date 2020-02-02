@@ -23,6 +23,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Random;
 import javax.imageio.ImageIO;
@@ -63,11 +64,13 @@ public class MainPanel extends JPanel {
     this.setBounds(25,44,PANEL_WIDTH,PANEL_HEIGHT);
     //生成图片
     try {
-      File cfgFile = ResourceUtils.getFile("classpath:images/gameover.png");
-      this.gameOverImage = ImageIO.read(cfgFile);
-      File restartFile = ResourceUtils.getFile("classpath:images/restart.png");
+      InputStream cfgStream = this.getClass().getClassLoader()
+          .getResourceAsStream("images/gameover.png");
+      this.gameOverImage = ImageIO.read(cfgStream);
+      InputStream restartStream = this.getClass().getClassLoader()
+          .getResourceAsStream("images/restart.png");
       //要想保存这个对象的话你要把image声明为BufferedImage 类型
-      BufferedImage restartImage = ImageIO.read(restartFile);
+      BufferedImage restartImage = ImageIO.read(restartStream);
       this.restartImage = restartImage;
       //处理点击事件
       this.addMouseListener(new MouseAdapter() {
